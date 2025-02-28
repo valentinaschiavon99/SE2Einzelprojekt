@@ -14,6 +14,10 @@ class LeaderboardController(
 
     @GetMapping
     fun getLeaderboard(): List<GameResult> =
-        gameResultService.getGameResults().sortedWith(compareBy({ -it.score }, { it.id }))
-
+        gameResultService.getGameResults()
+            .sortedWith(
+                compareByDescending<GameResult> { it.score } // Nach Score absteigend sortieren
+                    .thenBy { it.id } // Falls Score gleich ist, nach ID sortieren (niedrigste zuerst)
+            )
 }
+
